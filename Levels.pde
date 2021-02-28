@@ -13,10 +13,11 @@ void resetPlayer(float x, float y) {
 void LevelCabinSetup() {
   resetPlayer(100, 100);
   player.speed = 1;
+  bkgr = loadImage("/Environments/Cabin.png");
 }
 
 void LevelCabinDraw() {
-  background(100);
+  background(bkgr);
 
   player.update();
   player.render();

@@ -3,6 +3,8 @@ PVector ctrlInput;
 
 String LEVEL;
 
+PImage bkgr;
+
 void settings() {
   fullScreen();
 }
@@ -66,7 +68,7 @@ void draw() {
 
 
   // Gizmos
-  drawGrid();
+  //drawGrid();
 }
 
 boolean ctrlTop = false;
