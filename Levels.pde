@@ -24,14 +24,15 @@ void LevelCabinDraw() {
 }
 
 
-//Pier
-void LevelPierSetup() {
+//Shore
+void LevelShoreSetup() {
   resetPlayer(width/2, 100);
   player.speed = 2;
+  bkgr = loadImage("/Environments/Shore.png");
 }
 
-void LevelPierDraw() {
-  background(0, 0, 255);
+void LevelShoreDraw() {
+  background(bkgr);
 
   player.update();
   player.render();

@@ -36,17 +36,17 @@ void draw() {
 
     //Next Level
     if (!player.onScreen)
-      nextLevel("pier");
+      nextLevel("Shore");
     break;
-  case "pier": //Pier
+  case "Shore": //Shore
     //Setup
     if (newLevelSetup) {
-      LevelPierSetup();
+      LevelShoreSetup();
       newLevelSetup = false;
     }
 
     //Draw
-    LevelPierDraw();
+    LevelShoreDraw();
 
     //NextLevel
     if (!player.onScreen)
