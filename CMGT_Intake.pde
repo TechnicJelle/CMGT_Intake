@@ -5,9 +5,25 @@ String LEVEL;
 
 PImage bkgr;
 
+ArrayList<Entity> walls = new ArrayList<Entity>();
+
 void settings() {
   fullScreen();
 }
+
+PVector down;
+void mousePressed() {
+  down = new PVector(mouseX, mouseY);
+  //println("down:" + mouseX + "," + mouseY);
+}
+void mouseReleased() {
+  //println("up:" + mouseX + "," + mouseY);
+  int x = int(mouseX - down.x);
+  int y = int(mouseY - down.y);
+  //println("diff:" + x + "," + y);
+  println("walls.add(new Entity(" + int(down.x) + ", " + int(down.y) + ", " + x + ", " + y + "));");
+}
+
 
 void setup() {
   player = new Player(width/2, height/2);

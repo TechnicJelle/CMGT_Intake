@@ -5,12 +5,24 @@ class Entity {
   float mass;
   PVector size;
 
+  color debugCol;
+
   Entity(PVector p, PVector s) {
     pos = p.copy();
     vel = new PVector(0, 0);
     acc = new PVector(0, 0);
     mass = 1;
     size = s.copy();
+    debugCol = color(random(255), random(255), random(255));
+  }
+
+  Entity(float x, float y, float sx, float sy) {
+    pos = new PVector(x, y);
+    vel = new PVector(0, 0);
+    acc = new PVector(0, 0);
+    mass = 1;
+    size = new PVector(sx, sy);
+    debugCol = color(random(255), random(255), random(255));
   }
 
   void applyForce(PVector f) {
@@ -27,7 +39,7 @@ class Entity {
 
   void render() {
     noFill();
-    stroke(255);
+    stroke(debugCol);
     strokeWeight(1);
     rectMode(CORNER);
     rect(pos.x, pos.y, size.x, size.y);
