@@ -87,10 +87,13 @@ void draw() {
   //drawGrid();
 }
 
-boolean ctrlTop = false;
-boolean ctrlBottom = false;
-boolean ctrlLeft = false;
-boolean ctrlRight = false;
+boolean btnCtrlTop = false;
+boolean btnCtrlBottom = false;
+boolean btnCtrlLeft = false;
+boolean btnCtrlRight = false;
+boolean canDash = true;
+boolean btnDash = false;
+int millisAtDash = -1;
 
 void keyPressed() {
   if (key == CODED) {
@@ -99,16 +102,20 @@ void keyPressed() {
   } else {
     switch(key) {
     case 'w':
-      ctrlTop = true;
+      btnCtrlTop = true;
       break;
     case 's':
-      ctrlBottom = true;
+      btnCtrlBottom = true;
       break;
     case 'a':
-      ctrlLeft = true;
+      btnCtrlLeft = true;
       break;
     case 'd':
-      ctrlRight = true;
+      btnCtrlRight = true;
+      break;
+    case ' ':
+      btnDash = true;
+      millisAtDash = millis();
       break;
     }
   }
@@ -121,16 +128,19 @@ void keyReleased() {
   } else {
     switch(key) {
     case 'w':
-      ctrlTop = false;
+      btnCtrlTop = false;
       break;
     case 's':
-      ctrlBottom = false;
+      btnCtrlBottom = false;
       break;
     case 'a':
-      ctrlLeft = false;
+      btnCtrlLeft = false;
       break;
     case 'd':
-      ctrlRight = false;
+      btnCtrlRight = false;
+      break;
+    case ' ':
+      btnDash = false;
       break;
     }
   }
@@ -156,5 +166,109 @@ void drawGrid() {
   }
   for (int j = -TILE_SIZE; j < height+TILE_SIZE; j += TILE_SIZE) {
     line(0, j-1, width, j-1);
+  }
+}
+
+boolean isAabbCollision(Entity e1, Entity e2) {
+  return isAabbCollision(e1.pos.x, e1.pos.y, e1.size.x, e1.size.y, e2.pos.x, e2.pos.y, e2.size.x, e2.size.y);
+}
+
+boolean isAabbCollision(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2)
+{
+  // Adapted from https://tutorialedge.net/gamedev/aabb-collision-detection-tutorial/
+  return x1 < x2 + w2 &&
+    x1 + w1 > x2 &&
+    y1 < y2 + h2 &&
+    y1 + h1 > y2;
+}
+
+PVector SweptAABB(Entity b1, Entity b2) {
+  float xInvEntry, yInvEntry; 
+  float xInvExit, yInvExit; 
+
+  // find the distance between the objects on the near and far sides for both x and y 
+  if (b1.vel.x > 0.0f) 
+  { 
+    xInvEntry = b2.pos.x - (b1.pos.x + b1.size.x);  
+    xInvExit = (b2.pos.x + b2.size.x) - b1.pos.x;
+  } else 
+  { 
+    xInvEntry = (b2.pos.x + b2.size.x) - b1.pos.x;  
+    xInvExit = b2.pos.x - (b1.pos.x + b1.size.x);
+  } 
+
+  if (b1.vel.y > 0.0f) 
+  { 
+    yInvEntry = b2.pos.y - (b1.pos.y + b1.size.y);  
+    yInvExit = (b2.pos.y + b2.size.y) - b1.pos.y;
+  } else 
+  { 
+    yInvEntry = (b2.pos.y + b2.size.y) - b1.pos.y;  
+    yInvExit = b2.pos.y - (b1.pos.y + b1.size.y);
+  }
+  //println(xInvEntry, yInvEntry, xInvExit, yInvExit);
+
+  float xEntry, yEntry; 
+  float xExit, yExit; 
+
+  if (round(b1.vel.x) == 0.0f) 
+  {
+    xEntry = Float.NEGATIVE_INFINITY; 
+    xExit = Float.POSITIVE_INFINITY;
+  } else 
+  { 
+    xEntry = xInvEntry / b1.vel.x; 
+    xExit = xInvExit / b1.vel.x;
+  } 
+
+  if (round(b1.vel.y) == 0.0f) 
+  { 
+    yEntry = Float.NEGATIVE_INFINITY; 
+    yExit = Float.POSITIVE_INFINITY;
+  } else 
+  { 
+    yEntry = yInvEntry / b1.vel.y; 
+    yExit = yInvExit / b1.vel.y;
+  }
+  //println(xEntry, yEntry, xExit, yExit);
+  // find the earliest/latest times of collision
+  float entryTime = max(xEntry, yEntry);
+  float exitTime = min(xExit, yExit);
+  println(entryTime, exitTime);
+
+  float normalx, normaly;  
+  // if there was no collision
+  if (entryTime > exitTime || xEntry < 0.0f && yEntry < 0.0f || xEntry > 1.0f || yEntry > 1.0f)
+  { 
+    normalx = 0.0f; 
+    normaly = 0.0f; 
+    return new PVector(normalx, normaly, 1.0f);
+  } else // if there was a collision 
+  { 
+    // calculate normal of collided surface
+    if (xEntry > yEntry) 
+    { 
+      if (xInvEntry < 0.0f) 
+      { 
+        normalx = 1.0f; 
+        normaly = 0.0f;
+      } else 
+      { 
+        normalx = -1.0f; 
+        normaly = 0.0f;
+      }
+    } else 
+    { 
+      if (yInvEntry < 0.0f) 
+      { 
+        normalx = 0.0f; 
+        normaly = 1.0f;
+      } else 
+      { 
+        normalx = 0.0f; 
+        normaly = -1.0f;
+      }
+    } // return the time of collision
+    return new PVector(normalx, normaly, entryTime);
   }
 }
