@@ -30,31 +30,18 @@ class Player extends Entity {
     colliding = false;
     for (int i = 0; i < walls.size(); i++) {
       Entity w = walls.get(i);
-      //if (pos.x < w.pos.x + w.size.x && pos.x + size.x > w.pos.x
-      //  &&pos.y < w.pos.y + w.size.y && pos.y + size.y > w.pos.y) {
-      //  colliding = true;
-      //  //TODO: https://www.deengames.com/blog/category/technical.html
-      //}
-      //if (isAabbCollision(this, w)) {
-      PVector heehoo = SweptAABB(this, w);
-      float normalx = heehoo.x;
-      float normaly = heehoo.y;
-      float collisiontime = heehoo.z;
-      println(collisiontime);
-      //box.x += box.vx * collisiontime;
-      //box.y += box.vy * collisiontime;
-      float remainingtime = 1.0f - collisiontime;
-      vel.add(acc);
-      pos.add(PVector.mult(vel, collisiontime));
-      acc.mult(0);
-      //}
+      if (isAabbCollision(this, w)) {
+        colliding = true;
+      }
     }
 
-    //super.update();
+    super.update();
   }
 
   void render() {
     super.render();
+    if (colliding)
+      rect(pos.x, pos.y, 10, 10);
     //fill(255, 0, 0);
     //noStroke();
     //ellipseMode(CORNER);
