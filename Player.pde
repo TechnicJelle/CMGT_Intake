@@ -5,8 +5,6 @@ class Player extends Entity {
   boolean onScreen = true;
   PImage sprite;
 
-  boolean colliding = false;
-
   Player(float x, float y) {
     super(new PVector(x, y), new PVector(0, 0));
     sprite = loadImage("/Environments/Hat.png");
@@ -27,25 +25,23 @@ class Player extends Entity {
       //drawInput(ctrlInput);
     }
 
-    colliding = false;
+    vel.add(acc);
+
     for (int i = 0; i < walls.size(); i++) {
-      Entity w = walls.get(i);
-      if (isAabbCollision(this, w)) {
-        colliding = true;
+      Collision c = DynamicEntityVsEntity(this, walls.get(i));
+      if (c.result) {
+        //vRects.get(0).vel.mult(0);
+        vel.add(elemmult(c.contact_normal, new PVector(abs(vel.x), abs(vel.y))));
+        //vRects.get(0).vel.add(PVector.mult(elemmult(c.contact_normal, new PVector(abs(vRects.get(0).vel.x), abs(vRects.get(0).vel.y))), (1 - c.t_hit_near)));
       }
     }
 
-    super.update();
+    pos.add(vel);
+    acc.mult(0);
   }
 
   void render() {
     super.render();
-    if (colliding)
-      rect(pos.x, pos.y, 10, 10);
-    //fill(255, 0, 0);
-    //noStroke();
-    //ellipseMode(CORNER);
-    //ellipse(pos.x, pos.y, size.x, size.y);
     pushMatrix();
     translate(pos.x+sprite.width/2, pos.y+sprite.height/2);
     rotate(vel.heading());

@@ -30,8 +30,8 @@ void LevelCabinSetup() {
 }
 
 void LevelCabinDraw() {
-  //background(bkgr);
-  background(100);
+  background(bkgr);
+  //background(100);
 
   player.update();
   player.render();
@@ -57,8 +57,8 @@ void LevelShoreSetup() {
 }
 
 void LevelShoreDraw() {
-  //background(bkgr);
-  background(100);
+  background(bkgr);
+  //background(100);
   for (Entity w : walls) {
     w.render();
   }

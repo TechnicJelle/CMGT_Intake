@@ -13,7 +13,7 @@ class Entity {
     acc = new PVector(0, 0);
     mass = 1;
     size = s.copy();
-    debugCol = color(random(255), random(255), random(255));
+    debugCol = color(random(100, 255), random(100, 255), random(100, 255));
   }
 
   Entity(float x, float y, float sx, float sy) {
