@@ -5,8 +5,6 @@ class Player extends Entity {
   boolean onScreen = true;
   PImage sprite;
 
-  boolean colliding = false;
-
   Player(float x, float y) {
     super(new PVector(x, y), new PVector(0, 0));
     sprite = loadImage("/Environments/Hat.png");
@@ -17,31 +15,33 @@ class Player extends Entity {
     onScreen = pos.x > -size.x && pos.x < width+size.x && pos.y > -size.y && pos.y < height+size.y;
 
     if (keyPressed) {
-      ctrlInput = new PVector((ctrlLeft ? -1 : (ctrlRight ? 1 : 0)), (ctrlTop ? -1 : (ctrlBottom ? 1 : 0))).limit(1);
+      ctrlInput = new PVector((btnCtrlLeft ? -1 : (btnCtrlRight ? 1 : 0)), (btnCtrlTop ? -1 : (btnCtrlBottom ? 1 : 0))).limit(1);
       applyForce(ctrlInput.mult(speed));
-      drawInput(ctrlInput);
+      if (btnDash) {
+        btnDash = false;
+        if (LEVEL != "cabin")
+          applyForce(PVector.mult(vel, speed*2));
+      }
+      //drawInput(ctrlInput);
     }
 
-    colliding = false;
+    vel.add(acc);
+
     for (int i = 0; i < walls.size(); i++) {
-      Entity w = walls.get(i);
-      if (pos.x < w.pos.x + w.size.x && pos.x + size.x > w.pos.x 
-        &&pos.y < w.pos.y + w.size.y && pos.y + size.y > w.pos.y) {
-        colliding = true;
-        //TODO: https://www.deengames.com/blog/category/technical.html
+      Collision c = DynamicEntityVsEntity(this, walls.get(i));
+      if (c.result) {
+        //vRects.get(0).vel.mult(0);
+        vel.add(elemmult(c.contact_normal, new PVector(abs(vel.x), abs(vel.y))));
+        //vRects.get(0).vel.add(PVector.mult(elemmult(c.contact_normal, new PVector(abs(vRects.get(0).vel.x), abs(vRects.get(0).vel.y))), (1 - c.t_hit_near)));
       }
     }
 
-
-    super.update();
+    pos.add(vel);
+    acc.mult(0);
   }
 
   void render() {
     super.render();
-    //fill(255, 0, 0);
-    //noStroke();
-    //ellipseMode(CORNER);
-    //ellipse(pos.x, pos.y, size.x, size.y);
     pushMatrix();
     translate(pos.x+sprite.width/2, pos.y+sprite.height/2);
     rotate(vel.heading());

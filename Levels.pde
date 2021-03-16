@@ -2,10 +2,10 @@ void resetPlayer(float x, float y) {
   player.pos = new PVector(x, y);
   player.vel = new PVector(0, 0);
   player.acc = new PVector(0, 0);
-  ctrlTop = false;
-  ctrlBottom = false;
-  ctrlLeft = false;
-  ctrlRight = false;
+  btnCtrlTop = false;
+  btnCtrlBottom = false;
+  btnCtrlLeft = false;
+  btnCtrlRight = false;
 }
 
 
@@ -30,8 +30,8 @@ void LevelCabinSetup() {
 }
 
 void LevelCabinDraw() {
-  //background(bkgr);
-  background(100);
+  background(bkgr);
+  //background(100);
 
   player.update();
   player.render();
@@ -53,10 +53,12 @@ void LevelShoreSetup() {
   walls.clear();
   walls.add(new Entity(0, 0, 817, 551));
   walls.add(new Entity(1104, 0, 805, 459));
+  walls.add(new Entity(770, 0, 348, 40));
 }
 
 void LevelShoreDraw() {
   background(bkgr);
+  //background(100);
   for (Entity w : walls) {
     w.render();
   }

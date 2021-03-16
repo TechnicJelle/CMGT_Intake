@@ -87,10 +87,13 @@ void draw() {
   //drawGrid();
 }
 
-boolean ctrlTop = false;
-boolean ctrlBottom = false;
-boolean ctrlLeft = false;
-boolean ctrlRight = false;
+boolean btnCtrlTop = false;
+boolean btnCtrlBottom = false;
+boolean btnCtrlLeft = false;
+boolean btnCtrlRight = false;
+boolean canDash = true;
+boolean btnDash = false;
+int millisAtDash = -1;
 
 void keyPressed() {
   if (key == CODED) {
@@ -99,16 +102,20 @@ void keyPressed() {
   } else {
     switch(key) {
     case 'w':
-      ctrlTop = true;
+      btnCtrlTop = true;
       break;
     case 's':
-      ctrlBottom = true;
+      btnCtrlBottom = true;
       break;
     case 'a':
-      ctrlLeft = true;
+      btnCtrlLeft = true;
       break;
     case 'd':
-      ctrlRight = true;
+      btnCtrlRight = true;
+      break;
+    case ' ':
+      btnDash = true;
+      millisAtDash = millis();
       break;
     }
   }
@@ -121,16 +128,19 @@ void keyReleased() {
   } else {
     switch(key) {
     case 'w':
-      ctrlTop = false;
+      btnCtrlTop = false;
       break;
     case 's':
-      ctrlBottom = false;
+      btnCtrlBottom = false;
       break;
     case 'a':
-      ctrlLeft = false;
+      btnCtrlLeft = false;
       break;
     case 'd':
-      ctrlRight = false;
+      btnCtrlRight = false;
+      break;
+    case ' ':
+      btnDash = false;
       break;
     }
   }
@@ -157,4 +167,15 @@ void drawGrid() {
   for (int j = -TILE_SIZE; j < height+TILE_SIZE; j += TILE_SIZE) {
     line(0, j-1, width, j-1);
   }
+}
+
+boolean aabb(Entity e1, Entity e2) {
+  return aabb(e1.pos.x, e1.pos.y, e1.size.x, e1.size.y, e2.pos.x, e2.pos.y, e2.size.x, e2.size.y);
+}
+
+boolean aabb(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2)
+{
+  //adapted from: https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
+  return x1 < x2 + w2  &&  x1 + w1 > x2 
+    &&   y1 < y2 + h2  &&  y1 + h1 > y2;
 }
