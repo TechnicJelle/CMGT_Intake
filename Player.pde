@@ -27,30 +27,33 @@ class Player extends Entity {
       //drawInput(ctrlInput);
     }
 
+    vel.add(acc);
     colliding = false;
     for (int i = 0; i < walls.size(); i++) {
-      Entity w = walls.get(i);
-      if (isAabbCollision(this, w)) {
-        colliding = true;
-      }
+      Entity wall = walls.get(i);
+      //if (isAabbCollision(this, wall)) {
+      //  colliding = true;
+      //}
+      PVector j = jesse(this, wall);
+      //j.mult(0);
+      println(j);
+      vel.x *= j.x;
+      vel.y *= j.y;
     }
 
-    super.update();
+    pos.add(vel);
+    acc.mult(0);
   }
 
   void render() {
     super.render();
     if (colliding)
       rect(pos.x, pos.y, 10, 10);
-    //fill(255, 0, 0);
-    //noStroke();
-    //ellipseMode(CORNER);
-    //ellipse(pos.x, pos.y, size.x, size.y);
-    pushMatrix();
-    translate(pos.x+sprite.width/2, pos.y+sprite.height/2);
-    rotate(vel.heading());
-    image(sprite, -sprite.width/2, -sprite.height/2);
-    popMatrix();
+    //pushMatrix();
+    //translate(pos.x+sprite.width/2, pos.y+sprite.height/2);
+    //rotate(vel.heading());
+    //image(sprite, -sprite.width/2, -sprite.height/2);
+    //popMatrix();
   }
 
   void changeSize(int newSize) {
