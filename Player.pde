@@ -18,7 +18,7 @@ class Player extends EntitySprite {
     if (keyPressed) {
       ctrlInput = new PVector((btnCtrlLeft ? -1 : (btnCtrlRight ? 1 : 0)), (btnCtrlTop ? -1 : (btnCtrlBottom ? 1 : 0))).limit(1);
       applyForce(ctrlInput.mult(speed));
-      if (LEVEL != "cabin" && mayDash) {
+      if (LEVEL != LEVELS.CABIN && mayDash) {
         if (btnDash && vel.magSq() > 1) {
           applyForce(PVector.mult(vel, speed*2));
           millisAtDash = millis();
