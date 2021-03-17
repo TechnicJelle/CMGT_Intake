@@ -32,14 +32,9 @@ void LevelCabinSetup() {
 
 void LevelCabinDraw() {
   background(bkgr);
-  //background(100);
 
   player.update();
   player.render();
-
-  //for (Entity o : obstacles) {
-  //  o.render();
-  //}
 }
 
 
@@ -59,12 +54,12 @@ void LevelShoreSetup() {
   obstacles.add(new Entity(0, 0, 1, 1079));
   obstacles.add(new Entity(1919, 0, 1, 1079));
 
-  obstacles.add(new EntitySprite(100, 884, 300, 300, "Crate.png"));
+  obstacles.add(new EntitySprite(100, 800, 200, 200, "Crate.png"));
+  obstacles.add(new EntitySprite(1400, 700, 250, 250, "Crate.png"));
 }
 
 void LevelShoreDraw() {
   background(bkgr);
-  //background(100);
 
   for (Entity o : obstacles) {
     o.render();
@@ -91,11 +86,17 @@ void LevelJungle1Setup() {
   obstacles.add(new Entity(0, -player.size.y-5, 1919, 1));
   obstacles.add(new Entity(0, 0, 1, 1079));
   obstacles.add(new Entity(0, 1079, 1919, 1));
+
+  obstacles.add(new EntitySprite(1400, 700, 250, 250, "Barrel.png"));
 }
 
 void LevelJungle1Draw() {
   background(bkgr);
 
+  for (Entity o : obstacles) {
+    o.render();
+  }
+  
   player.update();
   player.render();
 }

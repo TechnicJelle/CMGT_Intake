@@ -1,7 +1,14 @@
 Player player;
 PVector ctrlInput;
 
-String LEVEL;
+int LEVEL;
+interface LEVELS {
+  int
+    CABIN   = 0, 
+    SHORE   = 1, 
+    JUNGLE1 = 2, 
+    JUNGLE2 = 3;
+}
 
 PImage bkgr;
 PImage PIMGshore;
@@ -28,7 +35,7 @@ void mouseReleased() {
 void setup() {
   player = new Player(width/2, height/2);
 
-  LEVEL = "cabin";
+  LEVEL = LEVELS.CABIN;
 
   thread("loadBackgrounds");
   //loadBackgrounds();
@@ -40,7 +47,13 @@ void loadBackgrounds() {
   PIMGjungle2 = loadImage("Jungle2.png");
 }
 
-void nextLevel(String nl) {
+void nextLevel() {
+  LEVEL++;
+  newLevelSetup = true;
+  obstacles.clear();
+}
+
+void setLevel(int nl) {
   LEVEL = nl;
   newLevelSetup = true;
   obstacles.clear();
@@ -50,7 +63,7 @@ boolean newLevelSetup = true;
 
 void draw() {
   switch(LEVEL) {
-  case "cabin": //Cabin
+  case LEVELS.CABIN: //Cabin
     //Setup
     if (newLevelSetup) {
       LevelCabinSetup();
@@ -62,9 +75,9 @@ void draw() {
 
     //Next Level
     if (!player.onScreen)
-      nextLevel("shore");
+      nextLevel();
     break;
-  case "shore": //Shore
+  case LEVELS.SHORE: //Shore
     //Setup
     if (newLevelSetup) {
       LevelShoreSetup();
@@ -76,9 +89,9 @@ void draw() {
 
     //NextLevel
     if (!player.onScreen)
-      nextLevel("jungle1");
+      nextLevel();
     break;
-  case "jungle1": //Jungle1
+  case LEVELS.JUNGLE1: //Jungle1
     //Setup
     if (newLevelSetup) {
       LevelJungle1Setup();
@@ -90,9 +103,9 @@ void draw() {
 
     //NextLevel
     if (!player.onScreen)
-      nextLevel("jungle2");
+      nextLevel();
     break;
-  case "jungle2": //Shore
+  case LEVELS.JUNGLE2: //Shore
     //Setup
     if (newLevelSetup) {
       LevelJungle2Setup();
@@ -104,7 +117,7 @@ void draw() {
 
     //NextLevel
     if (!player.onScreen)
-      nextLevel("jungle1");
+      nextLevel();
     break;
   }
 
