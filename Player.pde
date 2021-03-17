@@ -9,6 +9,11 @@ class Player extends EntitySprite {
 
   boolean hasSword = false;
 
+  PImage sword = loadImage("SwordWeapon.png");
+  boolean swinging = false;
+  float swingProgress = -1;
+  int millisAtSwing = -1;
+
   Player(float x, float y) {
     super(x, y, "Hat.png", ENTITY_TYPE.PLAYER);
   }
@@ -29,14 +34,28 @@ class Player extends EntitySprite {
         }
       }
     }
+
+    if (!swinging && btnSwing && hasSword) {
+      millisAtSwing = millis();
+      swinging = true;
+      //btnSwing = false;
+      setAim();
+    }
+
     if (millis() - millisAtDash > 1000)
       mayDash = true;
+    if (millis() - millisAtSwing > SWING_SPEED)
+      swinging = false;
+
+    if (swinging) 
+      swingProgress = map(millis() - millisAtSwing, 0, SWING_SPEED, 0, 1);
+
 
     //drawInput(ctrlInput);
 
     vel.add(acc);
 
-    for (int i = obstacles.size() - 1; i > 0; i--) {
+    for (int i = obstacles.size() - 1; i >= 0; i--) {
       Entity o = obstacles.get(i);
       if (o.TYPE == ENTITY_TYPE.WALL || o.TYPE == ENTITY_TYPE.TEMPWALL || o.TYPE == ENTITY_TYPE.OBSTACLE
         || o.TYPE == ENTITY_TYPE.ENEMY || o.TYPE == ENTITY_TYPE.SWORD) {
@@ -59,11 +78,23 @@ class Player extends EntitySprite {
   }
 
   void render() {
+    if (swinging) {
+      pushMatrix();
+      translate(pos.x + size.x/2, pos.y + size.y/2);
+      rotate(swingProgress * HALF_PI - HALF_PI + aim.heading());
+      image(sword, 0, 0);
+      popMatrix();
+    }
     super.render();
     if (!mayDash) {
       noStroke();
       fill(255, map(millis() - millisAtDash, 0, 1000, 0, 255));
       ellipse(0, 0, size.x, size.x);
     }
+  }
+
+  void changeSize(int newSize) {
+    super.changeSize(newSize);
+    sword.resize(int(size.x), int(size.y));
   }
 }

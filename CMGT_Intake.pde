@@ -1,6 +1,9 @@
 Player player;
 PVector ctrlInput;
 
+int DASH_COOLDOWN = 1000; //in millis
+int SWING_SPEED = 300; //in millis
+
 int LEVEL;
 interface LEVELS {
   int
@@ -32,14 +35,22 @@ void settings() {
   fullScreen();
 }
 
-PVector down;
+PVector aim;
 void mousePressed() {
-  down = new PVector(mouseX, mouseY);
+  if (!player.swinging)
+    setAim();
+  btnSwing = true;
 }
 void mouseReleased() {
-  int x = int(mouseX - down.x);
-  int y = int(mouseY - down.y);
-  println("walls.add(new Entity(" + int(down.x) + ", " + int(down.y) + ", " + x + ", " + y + "));");
+  //int x = int(mouseX - down.x);
+  //int y = int(mouseY - down.y);
+  //println("walls.add(new Entity(" + int(down.x) + ", " + int(down.y) + ", " + x + ", " + y + "));");
+  btnSwing = false;
+}
+
+void setAim() {
+  aim = new PVector(mouseX, mouseY).sub(PVector.add(player.pos, PVector.div(player.size, 2)));
+  println(aim);
 }
 
 
@@ -148,8 +159,8 @@ boolean btnCtrlTop = false;
 boolean btnCtrlBottom = false;
 boolean btnCtrlLeft = false;
 boolean btnCtrlRight = false;
-boolean canDash = true;
 boolean btnDash = false;
+boolean btnSwing = false;
 
 void keyPressed() {
   if (key == CODED) {
@@ -171,6 +182,9 @@ void keyPressed() {
       break;
     case ' ':
       btnDash = true;
+      break;
+    case 'l':
+      btnSwing = true;
       break;
     }
   }
@@ -196,6 +210,9 @@ void keyReleased() {
       break;
     case ' ':
       btnDash = false;
+      break;
+    case 'l':
+      btnSwing = false;
       break;
     }
   }

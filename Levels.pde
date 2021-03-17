@@ -98,7 +98,7 @@ void LevelJungle1Setup() {
 void LevelJungle1Draw() {
   background(bkgr);
 
-  for (int i = obstacles.size() - 1; i > 0; i--) {
+  for (int i = obstacles.size() - 1; i >= 0; i--) {
     Entity o = obstacles.get(i);
     if (o.TYPE != ENTITY_TYPE.WALL && o.TYPE != ENTITY_TYPE.TEMPWALL)
       o.render();
