@@ -71,7 +71,7 @@ Collision DynamicEntityVsEntity(Entity in, Entity target) { //returns PVector co
   if (in.vel.x == 0 && in.vel.y == 0)
     return new Collision(false);
 
-  Entity extended_target = new Entity(PVector.sub(target.pos, PVector.div(in.size, 2)), PVector.add(target.size, in.size));
+  Entity extended_target = new Entity(PVector.sub(target.pos, PVector.div(in.size, 2)), PVector.add(target.size, in.size), ENTITY_TYPE.TEMP);
   Collision c = RayVsEntity(PVector.add(in.pos, PVector.div(in.size, 2)), in.vel, extended_target);
   if (c.result) {
     if (c.t_hit_near <= 1.0f)

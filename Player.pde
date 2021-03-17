@@ -8,7 +8,7 @@ class Player extends EntitySprite {
   int millisAtDash = -1;
 
   Player(float x, float y) {
-    super(new PVector(x, y), new PVector(0, 0), "Hat.png");
+    super(new PVector(x, y), new PVector(0, 0), "Hat.png", ENTITY_TYPE.PLAYER);
   }
 
   void update() {

@@ -18,16 +18,16 @@ void LevelCabinSetup() {
 
   bkgr = loadImage("Cabin2.png");
 
-  obstacles.add(new Entity(0, 0, 1919, 50));
-  obstacles.add(new Entity(607, 20, 705, 282));
-  obstacles.add(new Entity(833, 322, 255, 186));
-  obstacles.add(new Entity(845, 503, 231, 73));
-  obstacles.add(new Entity(31, 720, 376, 338));
-  obstacles.add(new Entity(0, 0, 58, 755));
-  obstacles.add(new Entity(387, 1026, 401, 53));
-  obstacles.add(new Entity(1134, 1026, 500, 53));
-  obstacles.add(new Entity(1568, 0, 351, 645));
-  obstacles.add(new Entity(1598, 664, 321, 415));
+  obstacles.add(new Entity(0, 0, 1919, 50, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(607, 20, 705, 282, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(833, 322, 255, 186, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(845, 503, 231, 73, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(31, 720, 376, 338, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(0, 0, 58, 755, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(387, 1026, 401, 53, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(1134, 1026, 500, 53, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(1568, 0, 351, 645, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(1598, 664, 321, 415, ENTITY_TYPE.WALL));
 }
 
 void LevelCabinDraw() {
@@ -48,21 +48,22 @@ void LevelShoreSetup() {
 
   bkgr = PIMGshore;
 
-  obstacles.add(new Entity(0, 0, 817, 551));
-  obstacles.add(new Entity(1104, 0, 805, 459));
-  obstacles.add(new Entity(770, 0, 348, 40));
-  obstacles.add(new Entity(0, 0, 1, 1079));
-  obstacles.add(new Entity(1919, 0, 1, 1079));
+  obstacles.add(new Entity(0, 0, 817, 551, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(1104, 0, 805, 459, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(770, 0, 348, 40, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(0, 0, 1, 1079, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(1919, 0, 1, 1079, ENTITY_TYPE.WALL));
 
-  obstacles.add(new EntitySprite(100, 800, 200, 200, "Crate.png"));
-  obstacles.add(new EntitySprite(1400, 700, 250, 250, "Crate.png"));
+  obstacles.add(new EntitySprite(100, 800, 200, 200, "Crate.png", ENTITY_TYPE.OBSTACLE));
+  obstacles.add(new EntitySprite(1400, 700, 250, 250, "Crate.png", ENTITY_TYPE.OBSTACLE));
 }
 
 void LevelShoreDraw() {
   background(bkgr);
 
   for (Entity o : obstacles) {
-    o.render();
+    if (o.TYPE != ENTITY_TYPE.WALL)
+      o.render();
   }
 
   player.update();
@@ -83,20 +84,21 @@ void LevelJungle1Setup() {
 
   bkgr = PIMGjungle1;
 
-  obstacles.add(new Entity(0, -player.size.y-5, 1919, 1));
-  obstacles.add(new Entity(0, 0, 1, 1079));
-  obstacles.add(new Entity(0, 1079, 1919, 1));
+  obstacles.add(new Entity(0, -player.size.y-5, 1919, 1, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(0, 0, 1, 1079, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(0, 1079, 1919, 1, ENTITY_TYPE.WALL));
 
-  obstacles.add(new EntitySprite(1400, 700, 250, 250, "Barrel.png"));
+  obstacles.add(new EntitySprite(1400, 700, 250, 250, "Barrel.png", ENTITY_TYPE.OBSTACLE));
 }
 
 void LevelJungle1Draw() {
   background(bkgr);
 
   for (Entity o : obstacles) {
-    o.render();
+    if (o.TYPE != ENTITY_TYPE.WALL)
+      o.render();
   }
-  
+
   player.update();
   player.render();
 }
@@ -109,13 +111,18 @@ void LevelJungle2Setup() {
 
   bkgr = PIMGjungle2;
 
-  obstacles.add(new Entity(0, 0, 1919, 1));
-  obstacles.add(new Entity(-player.size.x-5, 0, 1, 1079));
-  obstacles.add(new Entity(0, 1079, 1919, 1));
+  obstacles.add(new Entity(0, 0, 1919, 1, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(-player.size.x-5, 0, 1, 1079, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(0, 1079, 1919, 1, ENTITY_TYPE.WALL));
 }
 
 void LevelJungle2Draw() {
   background(bkgr);
+
+  for (Entity o : obstacles) {
+    if (o.TYPE != ENTITY_TYPE.WALL)
+      o.render();
+  }
 
   player.update();
   player.render();

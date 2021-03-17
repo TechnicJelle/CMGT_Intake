@@ -1,12 +1,12 @@
 class EntitySprite extends Entity {
   PImage sprite;
 
-  EntitySprite(PVector p, PVector s, String asset) { 
-    super(p, s);
+  EntitySprite(PVector p, PVector s, String asset, int t) { 
+    super(p, s, t);
     sprite = loadImage(asset);
   }
-  EntitySprite(float x, float y, int sx, int sy, String asset) { 
-    super(new PVector(x, y), new PVector(0, 0));
+  EntitySprite(float x, float y, int sx, int sy, String asset, int t) { 
+    super(new PVector(x, y), new PVector(0, 0), t);
     sprite = loadImage(asset);
     changeSize(sx, sy);
   }

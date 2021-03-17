@@ -4,10 +4,19 @@ PVector ctrlInput;
 int LEVEL;
 interface LEVELS {
   int
-    CABIN   = 0, 
-    SHORE   = 1, 
-    JUNGLE1 = 2, 
+    CABIN   = 0,
+    SHORE   = 1,
+    JUNGLE1 = 2,
     JUNGLE2 = 3;
+}
+
+interface ENTITY_TYPE {
+  int
+    TEMP      = -1,
+    WALL      = 0,
+    OBSTACLE  = 1,
+    PLAYER    = 2,
+    ENEMY     = 3;
 }
 
 PImage bkgr;
