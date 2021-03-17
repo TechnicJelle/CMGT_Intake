@@ -34,8 +34,8 @@ class Player extends EntitySprite {
 
     vel.add(acc);
 
-    for (int i = 0; i < walls.size(); i++) {
-      Collision c = DynamicEntityVsEntity(this, walls.get(i));
+    for (int i = 0; i < obstacles.size(); i++) {
+      Collision c = DynamicEntityVsEntity(this, obstacles.get(i));
       if (c.result) {
         //vRects.get(0).vel.mult(0);
         vel.add(elemmult(c.contact_normal, new PVector(abs(vel.x), abs(vel.y))));
@@ -54,5 +54,9 @@ class Player extends EntitySprite {
       fill(255, map(millis() - millisAtDash, 0, 1000, 0, 255));
       ellipse(0, 0, size.x, size.y);
     }
+  }
+
+  void changeSize(int newSize) {
+    super.changeSize(newSize, newSize);
   }
 }

@@ -2,7 +2,7 @@ class Entity {
   PVector pos;
   PVector vel;
   PVector acc;
-  float mass;
+  //float mass;
   PVector size;
 
   color debugCol;
@@ -11,7 +11,7 @@ class Entity {
     pos = p.copy();
     vel = new PVector(0, 0);
     acc = new PVector(0, 0);
-    mass = 1;
+    //mass = 1;
     size = s.copy();
     debugCol = color(random(100, 255), random(100, 255), random(100, 255));
   }
@@ -20,13 +20,13 @@ class Entity {
     pos = new PVector(x, y);
     vel = new PVector(0, 0);
     acc = new PVector(0, 0);
-    mass = 1;
+    //mass = 1;
     size = new PVector(sx, sy);
     debugCol = color(random(255), random(255), random(255));
   }
 
   void applyForce(PVector f) {
-    f.div(mass); //Do take the mass into account in F = m * a  ==>  a = F / m
+    //f.div(mass); //Do take the mass into account in F = m * a  ==>  a = F / m
     acc.add(f);
   }
 

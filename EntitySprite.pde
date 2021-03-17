@@ -5,6 +5,11 @@ class EntitySprite extends Entity {
     super(p, s);
     sprite = loadImage(asset);
   }
+  EntitySprite(float x, float y, int sx, int sy, String asset) { 
+    super(new PVector(x, y), new PVector(0, 0));
+    sprite = loadImage(asset);
+    changeSize(sx, sy);
+  }
 
   void render() {
     pushMatrix();
@@ -14,8 +19,8 @@ class EntitySprite extends Entity {
     popMatrix();
   }
 
-  void changeSize(int newSize) {
-    sprite.resize(newSize, newSize);
+  void changeSize(int newSizeX, int newSizeY) {
+    sprite.resize(newSizeX, newSizeY);
     super.size = new PVector(sprite.width, sprite.height);
   }
 }

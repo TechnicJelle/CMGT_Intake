@@ -8,7 +8,7 @@ PImage PIMGshore;
 PImage PIMGjungle1;
 PImage PIMGjungle2;
 
-ArrayList<Entity> walls = new ArrayList<Entity>();
+ArrayList<Entity> obstacles = new ArrayList<Entity>();
 
 void settings() {
   fullScreen();
@@ -17,13 +17,10 @@ void settings() {
 PVector down;
 void mousePressed() {
   down = new PVector(mouseX, mouseY);
-  //println("down:" + mouseX + "," + mouseY);
 }
 void mouseReleased() {
-  //println("up:" + mouseX + "," + mouseY);
   int x = int(mouseX - down.x);
   int y = int(mouseY - down.y);
-  //println("diff:" + x + "," + y);
   println("walls.add(new Entity(" + int(down.x) + ", " + int(down.y) + ", " + x + ", " + y + "));");
 }
 
@@ -31,10 +28,10 @@ void mouseReleased() {
 void setup() {
   player = new Player(width/2, height/2);
 
-  LEVEL = "shore";
+  LEVEL = "cabin";
 
-  //thread("loadBackgrounds");
-  loadBackgrounds();
+  thread("loadBackgrounds");
+  //loadBackgrounds();
 }
 
 void loadBackgrounds() {
@@ -46,7 +43,7 @@ void loadBackgrounds() {
 void nextLevel(String nl) {
   LEVEL = nl;
   newLevelSetup = true;
-  walls.clear();
+  obstacles.clear();
 }
 
 boolean newLevelSetup = true;
@@ -111,10 +108,10 @@ void draw() {
     break;
   }
 
-  textSize(16);
-  fill(255);
-  textAlign(LEFT, TOP);
-  text(LEVEL, 10, 10);
+  //textSize(16);
+  //fill(255);
+  //textAlign(LEFT, TOP);
+  //text(LEVEL, 10, 10);
 
 
   // Gizmos

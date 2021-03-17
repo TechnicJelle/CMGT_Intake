@@ -18,16 +18,16 @@ void LevelCabinSetup() {
 
   bkgr = loadImage("Cabin2.png");
 
-  walls.add(new Entity(0, 0, 1919, 50));
-  walls.add(new Entity(607, 20, 705, 282));
-  walls.add(new Entity(833, 322, 255, 186));
-  walls.add(new Entity(845, 503, 231, 73));
-  walls.add(new Entity(31, 720, 376, 338));
-  walls.add(new Entity(0, 0, 58, 755));
-  walls.add(new Entity(387, 1026, 401, 53));
-  walls.add(new Entity(1134, 1026, 500, 53));
-  walls.add(new Entity(1568, 0, 351, 645));
-  walls.add(new Entity(1598, 664, 321, 415));
+  obstacles.add(new Entity(0, 0, 1919, 50));
+  obstacles.add(new Entity(607, 20, 705, 282));
+  obstacles.add(new Entity(833, 322, 255, 186));
+  obstacles.add(new Entity(845, 503, 231, 73));
+  obstacles.add(new Entity(31, 720, 376, 338));
+  obstacles.add(new Entity(0, 0, 58, 755));
+  obstacles.add(new Entity(387, 1026, 401, 53));
+  obstacles.add(new Entity(1134, 1026, 500, 53));
+  obstacles.add(new Entity(1568, 0, 351, 645));
+  obstacles.add(new Entity(1598, 664, 321, 415));
 }
 
 void LevelCabinDraw() {
@@ -37,8 +37,8 @@ void LevelCabinDraw() {
   player.update();
   player.render();
 
-  //for (Entity w : walls) {
-  //  w.render();
+  //for (Entity o : obstacles) {
+  //  o.render();
   //}
 }
 
@@ -53,22 +53,30 @@ void LevelShoreSetup() {
 
   bkgr = PIMGshore;
 
-  walls.add(new Entity(0, 0, 817, 551));
-  walls.add(new Entity(1104, 0, 805, 459));
-  walls.add(new Entity(770, 0, 348, 40));
-  walls.add(new Entity(0, 0, 1, 1079));
-  walls.add(new Entity(1919, 0, 1, 1079));
+  obstacles.add(new Entity(0, 0, 817, 551));
+  obstacles.add(new Entity(1104, 0, 805, 459));
+  obstacles.add(new Entity(770, 0, 348, 40));
+  obstacles.add(new Entity(0, 0, 1, 1079));
+  obstacles.add(new Entity(1919, 0, 1, 1079));
+
+  obstacles.add(new EntitySprite(100, 884, 300, 300, "Crate.png"));
 }
 
 void LevelShoreDraw() {
   background(bkgr);
   //background(100);
-  //for (Entity w : walls) {
-  //  w.render();
-  //}
+
+  for (Entity o : obstacles) {
+    o.render();
+  }
 
   player.update();
   player.render();
+
+  textSize(32);
+  fill(255);
+  textAlign(LEFT, TOP);
+  text("Press SPACE to dash!", 10, 10);
 }
 
 
@@ -80,9 +88,9 @@ void LevelJungle1Setup() {
 
   bkgr = PIMGjungle1;
 
-  walls.add(new Entity(0, -player.size.y-5, 1919, 1));
-  walls.add(new Entity(0, 0, 1, 1079));
-  walls.add(new Entity(0, 1079, 1919, 1));
+  obstacles.add(new Entity(0, -player.size.y-5, 1919, 1));
+  obstacles.add(new Entity(0, 0, 1, 1079));
+  obstacles.add(new Entity(0, 1079, 1919, 1));
 }
 
 void LevelJungle1Draw() {
@@ -100,9 +108,9 @@ void LevelJungle2Setup() {
 
   bkgr = PIMGjungle2;
 
-  walls.add(new Entity(0, 0, 1919, 1));
-  walls.add(new Entity(-player.size.x-5, 0, 1, 1079));
-  walls.add(new Entity(0, 1079, 1919, 1));
+  obstacles.add(new Entity(0, 0, 1919, 1));
+  obstacles.add(new Entity(-player.size.x-5, 0, 1, 1079));
+  obstacles.add(new Entity(0, 1079, 1919, 1));
 }
 
 void LevelJungle2Draw() {
