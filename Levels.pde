@@ -2,21 +2,22 @@ void resetPlayer(float x, float y) {
   player.pos = new PVector(x, y);
   player.vel = new PVector(0, 0);
   player.acc = new PVector(0, 0);
-  btnCtrlTop = false;
-  btnCtrlBottom = false;
-  btnCtrlLeft = false;
-  btnCtrlRight = false;
+  //btnCtrlTop = false;
+  //btnCtrlBottom = false;
+  //btnCtrlLeft = false;
+  //btnCtrlRight = false;
 }
 
 
 //Cabin
 void LevelCabinSetup() {
-  resetPlayer(124, 100);
-  player.speed = 1;
-  bkgr = loadImage("/Environments/Cabin2.png");
   player.changeSize(200);
+  resetPlayer(124, 100);
 
-  walls.clear();
+  player.speed = 1;
+
+  bkgr = loadImage("Cabin2.png");
+
   walls.add(new Entity(0, 0, 1919, 50));
   walls.add(new Entity(607, 20, 705, 282));
   walls.add(new Entity(833, 322, 255, 186));
@@ -36,9 +37,9 @@ void LevelCabinDraw() {
   player.update();
   player.render();
 
-  for (Entity w : walls) {
-    w.render();
-  }
+  //for (Entity w : walls) {
+  //  w.render();
+  //}
 }
 
 
@@ -46,35 +47,66 @@ void LevelCabinDraw() {
 void LevelShoreSetup() {
   player.changeSize(150);
   resetPlayer(width/2 - player.size.x/2, 100);
-  player.speed = 2;
-  bkgr = loadImage("/Environments/Shore2.png");
   player.vel = new PVector(0, 10);
 
-  walls.clear();
+  player.speed = 2;
+
+  bkgr = PIMGshore;
+
   walls.add(new Entity(0, 0, 817, 551));
   walls.add(new Entity(1104, 0, 805, 459));
   walls.add(new Entity(770, 0, 348, 40));
+  walls.add(new Entity(0, 0, 1, 1079));
+  walls.add(new Entity(1919, 0, 1, 1079));
 }
 
 void LevelShoreDraw() {
   background(bkgr);
   //background(100);
-  for (Entity w : walls) {
-    w.render();
-  }
+  //for (Entity w : walls) {
+  //  w.render();
+  //}
 
   player.update();
   player.render();
 }
 
 
-//Jungle
-void LevelJungleSetup() {
-  resetPlayer(100, height/2);
+//Jungle1
+void LevelJungle1Setup() {
+  player.changeSize(150);
+  resetPlayer(width/2 - player.size.x/2, -player.size.y);
+  player.vel = new PVector(0, 20);
+
+  bkgr = PIMGjungle1;
+
+  walls.add(new Entity(0, -player.size.y-5, 1919, 1));
+  walls.add(new Entity(0, 0, 1, 1079));
+  walls.add(new Entity(0, 1079, 1919, 1));
 }
 
-void LevelJungleDraw() {
-  background(0, 255, 0);
+void LevelJungle1Draw() {
+  background(bkgr);
+
+  player.update();
+  player.render();
+}
+
+//Jungle2
+void LevelJungle2Setup() {
+  player.changeSize(150);
+  resetPlayer(-player.size.x/2, height/2 - player.size.y/2);
+  player.vel = new PVector(20, 0);
+
+  bkgr = PIMGjungle2;
+
+  walls.add(new Entity(0, 0, 1919, 1));
+  walls.add(new Entity(-player.size.x-5, 0, 1, 1079));
+  walls.add(new Entity(0, 1079, 1919, 1));
+}
+
+void LevelJungle2Draw() {
+  background(bkgr);
 
   player.update();
   player.render();

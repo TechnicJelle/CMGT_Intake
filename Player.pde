@@ -7,12 +7,12 @@ class Player extends Entity {
 
   Player(float x, float y) {
     super(new PVector(x, y), new PVector(0, 0));
-    sprite = loadImage("/Environments/Hat.png");
+    sprite = loadImage("Hat.png");
   }
 
   void update() {
     vel.mult(dampeningFac);
-    onScreen = pos.x > -size.x && pos.x < width+size.x && pos.y > -size.y && pos.y < height+size.y;
+    onScreen = pos.x > -size.x*1.5 && pos.x < width+size.x*1.5 && pos.y > -size.y*1.5 && pos.y < height+size.y*1.5;
 
     if (keyPressed) {
       ctrlInput = new PVector((btnCtrlLeft ? -1 : (btnCtrlRight ? 1 : 0)), (btnCtrlTop ? -1 : (btnCtrlBottom ? 1 : 0))).limit(1);
@@ -41,7 +41,7 @@ class Player extends Entity {
   }
 
   void render() {
-    super.render();
+    //super.render();
     pushMatrix();
     translate(pos.x+sprite.width/2, pos.y+sprite.height/2);
     rotate(vel.heading());

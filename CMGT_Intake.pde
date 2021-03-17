@@ -4,6 +4,9 @@ PVector ctrlInput;
 String LEVEL;
 
 PImage bkgr;
+PImage PIMGshore;
+PImage PIMGjungle1;
+PImage PIMGjungle2;
 
 ArrayList<Entity> walls = new ArrayList<Entity>();
 
@@ -28,12 +31,22 @@ void mouseReleased() {
 void setup() {
   player = new Player(width/2, height/2);
 
-  LEVEL = "cabin";
+  LEVEL = "shore";
+
+  //thread("loadBackgrounds");
+  loadBackgrounds();
+}
+
+void loadBackgrounds() {
+  PIMGshore = loadImage("Shore2.png");
+  PIMGjungle1 = loadImage("Jungle1.png");
+  PIMGjungle2 = loadImage("Jungle2.png");
 }
 
 void nextLevel(String nl) {
   LEVEL = nl;
   newLevelSetup = true;
+  walls.clear();
 }
 
 boolean newLevelSetup = true;
@@ -52,9 +65,9 @@ void draw() {
 
     //Next Level
     if (!player.onScreen)
-      nextLevel("Shore");
+      nextLevel("shore");
     break;
-  case "Shore": //Shore
+  case "shore": //Shore
     //Setup
     if (newLevelSetup) {
       LevelShoreSetup();
@@ -66,14 +79,35 @@ void draw() {
 
     //NextLevel
     if (!player.onScreen)
-      nextLevel("jungle");
+      nextLevel("jungle1");
     break;
-  case "jungle": //Jungle
+  case "jungle1": //Jungle1
+    //Setup
     if (newLevelSetup) {
-      LevelJungleSetup();
+      LevelJungle1Setup();
       newLevelSetup = false;
     }
-    LevelJungleDraw();
+
+    //Draw
+    LevelJungle1Draw();
+
+    //NextLevel
+    if (!player.onScreen)
+      nextLevel("jungle2");
+    break;
+  case "jungle2": //Shore
+    //Setup
+    if (newLevelSetup) {
+      LevelJungle2Setup();
+      newLevelSetup = false;
+    }
+
+    //Draw
+    LevelJungle2Draw();
+
+    //NextLevel
+    if (!player.onScreen)
+      nextLevel("jungle1");
     break;
   }
 
