@@ -11,7 +11,7 @@ void resetPlayer(float x, float y) {
 
 //Cabin
 void LevelCabinSetup() {
-  player.changeSize(200);
+  //player.changeSize(200);
   resetPlayer(124, 100);
 
   player.speed = 1;
@@ -54,8 +54,8 @@ void LevelShoreSetup() {
   obstacles.add(new Entity(0, 0, 1, 1079, ENTITY_TYPE.WALL));
   obstacles.add(new Entity(1919, 0, 1, 1079, ENTITY_TYPE.WALL));
 
-  obstacles.add(new EntitySprite(100, 800, 200, 200, "Crate.png", ENTITY_TYPE.OBSTACLE));
-  obstacles.add(new EntitySprite(1400, 700, 250, 250, "Crate.png", ENTITY_TYPE.OBSTACLE));
+  obstacles.add(new EntitySprite(100, 800, "Crate.png", ENTITY_TYPE.OBSTACLE));
+  obstacles.add(new EntitySprite(1400, 700, "Crate.png", 300, ENTITY_TYPE.OBSTACLE));
 }
 
 void LevelShoreDraw() {
@@ -87,16 +87,23 @@ void LevelJungle1Setup() {
   obstacles.add(new Entity(0, -player.size.y-5, 1919, 1, ENTITY_TYPE.WALL));
   obstacles.add(new Entity(0, 0, 1, 1079, ENTITY_TYPE.WALL));
   obstacles.add(new Entity(0, 1079, 1919, 1, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(1919, 0, 1, 1079, ENTITY_TYPE.TEMPWALL));
 
-  obstacles.add(new EntitySprite(1400, 700, 250, 250, "Barrel.png", ENTITY_TYPE.OBSTACLE));
+  obstacles.add(new EntitySprite(0, 581, "Barrel.png", 250, ENTITY_TYPE.OBSTACLE));
+  obstacles.add(new EntitySprite(0, 831, "Barrel.png", 250, ENTITY_TYPE.OBSTACLE));
+  obstacles.add(new EntitySprite(250, 831, "Barrel.png", 250, ENTITY_TYPE.OBSTACLE));
+  obstacles.add(new EntitySprite(912, 318, "SwordFull.png", ENTITY_TYPE.SWORD));
 }
 
 void LevelJungle1Draw() {
   background(bkgr);
 
-  for (Entity o : obstacles) {
-    if (o.TYPE != ENTITY_TYPE.WALL)
+  for (int i = obstacles.size() - 1; i > 0; i--) {
+    Entity o = obstacles.get(i);
+    if (o.TYPE != ENTITY_TYPE.WALL && o.TYPE != ENTITY_TYPE.TEMPWALL)
       o.render();
+    if (player.hasSword && o.TYPE == ENTITY_TYPE.TEMPWALL)
+      obstacles.remove(i);
   }
 
   player.update();

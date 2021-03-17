@@ -1,11 +1,19 @@
 class EntitySprite extends Entity {
   PImage sprite;
 
-  EntitySprite(PVector p, PVector s, String asset, int t) { 
-    super(p, s, t);
+  EntitySprite(float x, float y, String asset, int t) { 
+    super(new PVector(x, y), new PVector(0, 0), t);
     sprite = loadImage(asset);
+    changeSize(sprite.width, sprite.height);
   }
-  EntitySprite(float x, float y, int sx, int sy, String asset, int t) { 
+
+  EntitySprite(float x, float y, String asset, int s, int t) { 
+    super(new PVector(x, y), new PVector(0, 0), t);
+    sprite = loadImage(asset);
+    changeSize(s);
+  }
+
+  EntitySprite(float x, float y, String asset, int sx, int sy, int t) { 
     super(new PVector(x, y), new PVector(0, 0), t);
     sprite = loadImage(asset);
     changeSize(sx, sy);
@@ -21,6 +29,10 @@ class EntitySprite extends Entity {
 
   void changeSize(int newSizeX, int newSizeY) {
     sprite.resize(newSizeX, newSizeY);
-    super.size = new PVector(sprite.width, sprite.height);
+    size = new PVector(sprite.width, sprite.height);
+  }
+
+  void changeSize(int newSize) {
+    changeSize(newSize, int(size.y/size.x*newSize));
   }
 }

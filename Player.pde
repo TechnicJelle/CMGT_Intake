@@ -7,8 +7,10 @@ class Player extends EntitySprite {
   boolean mayDash = true;
   int millisAtDash = -1;
 
+  boolean hasSword = false;
+
   Player(float x, float y) {
-    super(new PVector(x, y), new PVector(0, 0), "Hat.png", ENTITY_TYPE.PLAYER);
+    super(x, y, "Hat.png", ENTITY_TYPE.PLAYER);
   }
 
   void update() {
@@ -34,12 +36,21 @@ class Player extends EntitySprite {
 
     vel.add(acc);
 
-    for (int i = 0; i < obstacles.size(); i++) {
-      Collision c = DynamicEntityVsEntity(this, obstacles.get(i));
-      if (c.result) {
-        //vRects.get(0).vel.mult(0);
-        vel.add(elemmult(c.contact_normal, new PVector(abs(vel.x), abs(vel.y))));
-        //vRects.get(0).vel.add(PVector.mult(elemmult(c.contact_normal, new PVector(abs(vRects.get(0).vel.x), abs(vRects.get(0).vel.y))), (1 - c.t_hit_near)));
+    for (int i = obstacles.size() - 1; i > 0; i--) {
+      Entity o = obstacles.get(i);
+      if (o.TYPE == ENTITY_TYPE.WALL || o.TYPE == ENTITY_TYPE.TEMPWALL || o.TYPE == ENTITY_TYPE.OBSTACLE
+        || o.TYPE == ENTITY_TYPE.ENEMY || o.TYPE == ENTITY_TYPE.SWORD) {
+        Collision c = DynamicEntityVsEntity(this, o);
+        if (c.result) {
+          if (o.TYPE == ENTITY_TYPE.SWORD) {
+            hasSword = true;
+            obstacles.remove(i);
+          } else {
+            //mult(0);
+            vel.add(elemmult(c.contact_normal, new PVector(abs(vel.x), abs(vel.y))));
+            //vel.add(PVector.mult(elemmult(c.contact_normal, new PVector(abs(vel.x), abs(vel.y))), (1 - c.t_hit_near)));
+          }
+        }
       }
     }
 
@@ -52,11 +63,7 @@ class Player extends EntitySprite {
     if (!mayDash) {
       noStroke();
       fill(255, map(millis() - millisAtDash, 0, 1000, 0, 255));
-      ellipse(0, 0, size.x, size.y);
+      ellipse(0, 0, size.x, size.x);
     }
-  }
-
-  void changeSize(int newSize) {
-    super.changeSize(newSize, newSize);
   }
 }

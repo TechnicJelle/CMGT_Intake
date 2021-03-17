@@ -4,19 +4,21 @@ PVector ctrlInput;
 int LEVEL;
 interface LEVELS {
   int
-    CABIN   = 0,
-    SHORE   = 1,
-    JUNGLE1 = 2,
+    CABIN   = 0, 
+    SHORE   = 1, 
+    JUNGLE1 = 2, 
     JUNGLE2 = 3;
 }
 
 interface ENTITY_TYPE {
   int
-    TEMP      = -1,
-    WALL      = 0,
-    OBSTACLE  = 1,
-    PLAYER    = 2,
-    ENEMY     = 3;
+    TEMP     = -1, 
+    WALL     = 0, 
+    OBSTACLE = 1, 
+    PLAYER   = 2, 
+    ENEMY    = 3, 
+    SWORD    = 4, 
+    TEMPWALL = 5;
 }
 
 PImage bkgr;
@@ -46,8 +48,10 @@ void setup() {
 
   LEVEL = LEVELS.CABIN;
 
-  thread("loadBackgrounds");
-  //loadBackgrounds();
+  if (LEVEL == LEVELS.CABIN)
+    thread("loadBackgrounds");
+  else
+    loadBackgrounds();
 }
 
 void loadBackgrounds() {
