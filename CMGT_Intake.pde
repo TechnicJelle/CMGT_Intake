@@ -127,7 +127,6 @@ boolean btnCtrlLeft = false;
 boolean btnCtrlRight = false;
 boolean canDash = true;
 boolean btnDash = false;
-int millisAtDash = -1;
 
 void keyPressed() {
   if (key == CODED) {
@@ -149,7 +148,6 @@ void keyPressed() {
       break;
     case ' ':
       btnDash = true;
-      millisAtDash = millis();
       break;
     }
   }

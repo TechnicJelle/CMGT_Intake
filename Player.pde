@@ -1,13 +1,14 @@
-class Player extends Entity {
+class Player extends EntitySprite {
   float speed = 2;
   float dampeningFac = 0.8;
 
   boolean onScreen = true;
-  PImage sprite;
+
+  boolean mayDash = true;
+  int millisAtDash = -1;
 
   Player(float x, float y) {
-    super(new PVector(x, y), new PVector(0, 0));
-    sprite = loadImage("Hat.png");
+    super(new PVector(x, y), new PVector(0, 0), "Hat.png");
   }
 
   void update() {
@@ -17,13 +18,19 @@ class Player extends Entity {
     if (keyPressed) {
       ctrlInput = new PVector((btnCtrlLeft ? -1 : (btnCtrlRight ? 1 : 0)), (btnCtrlTop ? -1 : (btnCtrlBottom ? 1 : 0))).limit(1);
       applyForce(ctrlInput.mult(speed));
-      if (btnDash) {
-        btnDash = false;
-        if (LEVEL != "cabin")
+      if (LEVEL != "cabin" && mayDash) {
+        if (btnDash && vel.magSq() > 1) {
           applyForce(PVector.mult(vel, speed*2));
+          millisAtDash = millis();
+          mayDash = false;
+          btnDash = false;
+        }
       }
-      //drawInput(ctrlInput);
     }
+    if (millis() - millisAtDash > 1000)
+      mayDash = true;
+
+    //drawInput(ctrlInput);
 
     vel.add(acc);
 
@@ -41,16 +48,11 @@ class Player extends Entity {
   }
 
   void render() {
-    //super.render();
-    pushMatrix();
-    translate(pos.x+sprite.width/2, pos.y+sprite.height/2);
-    rotate(vel.heading());
-    image(sprite, -sprite.width/2, -sprite.height/2);
-    popMatrix();
-  }
-
-  void changeSize(int newSize) {
-    sprite.resize(newSize, newSize);
-    super.size = new PVector(sprite.width, sprite.height);
+    super.render();
+    if (!mayDash) {
+      noStroke();
+      fill(255, map(millis() - millisAtDash, 0, 1000, 0, 255));
+      ellipse(0, 0, size.x, size.y);
+    }
   }
 }
