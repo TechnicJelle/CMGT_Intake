@@ -1,3 +1,6 @@
 *.blend1
 *.kra~
 *.png~
+application.*/
+CMGT_Intake.*/
+CMGT_Intake.*.zip

@@ -10,7 +10,8 @@ interface LEVELS {
     CABIN   = 0, 
     SHORE   = 1, 
     JUNGLE1 = 2, 
-    JUNGLE2 = 3;
+    JUNGLE2 = 3, 
+    FINALE  = 4;
 }
 
 interface ENTITY_TYPE {
@@ -54,6 +55,7 @@ void setAim() {
 
 
 void setup() {
+  surface.setIcon(loadImage("Icon.png"));
   player = new Player(width/2, height/2);
 
   LEVEL = LEVELS.CABIN;
@@ -128,7 +130,7 @@ void draw() {
     if (!player.onScreen)
       nextLevel();
     break;
-  case LEVELS.JUNGLE2: //Shore
+  case LEVELS.JUNGLE2: //Jungle2
     //Setup
     if (newLevelSetup) {
       LevelJungle2Setup();
@@ -141,6 +143,16 @@ void draw() {
     //NextLevel
     if (!player.onScreen)
       nextLevel();
+    break;
+  case LEVELS.FINALE: //Shore
+    //Setup
+    if (newLevelSetup) {
+      LevelFinaleSetup();
+      newLevelSetup = false;
+    }
+
+    //Draw
+    LevelFinaleDraw();
     break;
   }
 

@@ -8,6 +8,13 @@ void resetPlayer(float x, float y) {
   //btnCtrlRight = false;
 }
 
+void tutorialText(String t) {
+  textAlign(LEFT, TOP);
+  textSize(32);
+  fill(255);
+  text(t, 10, 10);
+}
+
 
 //Cabin
 void LevelCabinSetup() {
@@ -35,6 +42,7 @@ void LevelCabinDraw() {
 
   player.update();
   player.render();
+  tutorialText("WASD to move");
 }
 
 
@@ -69,10 +77,7 @@ void LevelShoreDraw() {
   player.update();
   player.render();
 
-  textSize(32);
-  fill(255);
-  textAlign(LEFT, TOP);
-  text("Press SPACE to dash!", 10, 10);
+  tutorialText("Press SPACE to dash!");
 }
 
 
@@ -108,6 +113,9 @@ void LevelJungle1Draw() {
 
   player.update();
   player.render();
+  if (!player.hasSword) {
+    tutorialText("Pick up the sword");
+  }
 }
 
 //Jungle2
@@ -133,4 +141,22 @@ void LevelJungle2Draw() {
 
   player.update();
   player.render();
+  tutorialText("Left Click to swing your sword");
+}
+
+void LevelFinaleSetup() {
+  player.changeSize(200);
+  resetPlayer(width/2, height/2);
+  player.vel = new PVector(0, 0);
+}
+
+void LevelFinaleDraw() {
+  background(100);
+  player.update();
+  player.render();
+
+  textAlign(CENTER, CENTER);
+  textSize(64);
+  fill(255);
+  text("End of the demo!", width/2, height/2);
 }
