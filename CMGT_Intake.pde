@@ -1,28 +1,38 @@
 Player player;
 PVector ctrlInput;
 
+int DASH_COOLDOWN = 1000; //in millis
+int SWING_SPEED = 300; //in millis
+
 int LEVEL;
 interface LEVELS {
   int
-    CABIN   = 0,
-    SHORE   = 1,
-    JUNGLE1 = 2,
-    JUNGLE2 = 3;
+    CABIN   = 0, 
+    SHORE   = 1, 
+    JUNGLE1 = 2, 
+    JUNGLE2 = 3, 
+    FINALE  = 4;
 }
 
 interface ENTITY_TYPE {
   int
-    TEMP      = -1,
-    WALL      = 0,
-    OBSTACLE  = 1,
-    PLAYER    = 2,
-    ENEMY     = 3;
+    TEMP     = -1, 
+    WALL     = 0, 
+    OBSTACLE = 1, 
+    PLAYER   = 2, 
+    ENEMY    = 3, 
+    SWORD    = 4, 
+    TEMPWALL = 5;
 }
 
 PImage bkgr;
+PImage notesL, notesR;
+PImage captain, main;
 PImage PIMGshore;
 PImage PIMGjungle1;
 PImage PIMGjungle2;
+
+int levelMillis = -1;
 
 ArrayList<Entity> obstacles = new ArrayList<Entity>();
 
@@ -30,41 +40,56 @@ void settings() {
   fullScreen();
 }
 
-PVector down;
+PVector aim;
+//PVector down;
 void mousePressed() {
-  down = new PVector(mouseX, mouseY);
+  //down = new PVector(mouseX, mouseY);
+  if (!player.swinging)
+    setAim();
+  btnSwing = true;
 }
 void mouseReleased() {
-  int x = int(mouseX - down.x);
-  int y = int(mouseY - down.y);
-  println("walls.add(new Entity(" + int(down.x) + ", " + int(down.y) + ", " + x + ", " + y + "));");
+  //int x = int(mouseX - down.x);
+  //int y = int(mouseY - down.y);
+  //println("walls.add(new Entity(" + int(down.x) + ", " + int(down.y) + ", " + x + ", " + y + "));");
+  btnSwing = false;
+}
+
+void setAim() {
+  aim = new PVector(mouseX, mouseY).sub(PVector.add(player.pos, PVector.div(player.size, 2)));
 }
 
 
 void setup() {
+  surface.setIcon(loadImage("Icon.png"));
   player = new Player(width/2, height/2);
 
-  LEVEL = LEVELS.CABIN;
+  setLevel(LEVELS.CABIN);
 
-  thread("loadBackgrounds");
-  //loadBackgrounds();
+  if (LEVEL == LEVELS.CABIN)
+    thread("loadData");
+  else
+    loadData();
 }
 
-void loadBackgrounds() {
+void loadData() {
+  captain = loadImage("Captain.png");
+  main = loadImage("Main.png");
+  notesL = loadImage("NotesL.png");
+  notesR = loadImage("NotesR.png");
   PIMGshore = loadImage("Shore2.png");
   PIMGjungle1 = loadImage("Jungle1.png");
   PIMGjungle2 = loadImage("Jungle2.png");
 }
 
 void nextLevel() {
-  LEVEL++;
-  newLevelSetup = true;
-  obstacles.clear();
+  setLevel(++LEVEL);
 }
 
 void setLevel(int nl) {
   LEVEL = nl;
   newLevelSetup = true;
+  levelMillis = millis();
   obstacles.clear();
 }
 
@@ -114,7 +139,7 @@ void draw() {
     if (!player.onScreen)
       nextLevel();
     break;
-  case LEVELS.JUNGLE2: //Shore
+  case LEVELS.JUNGLE2: //Jungle2
     //Setup
     if (newLevelSetup) {
       LevelJungle2Setup();
@@ -127,6 +152,16 @@ void draw() {
     //NextLevel
     if (!player.onScreen)
       nextLevel();
+    break;
+  case LEVELS.FINALE: //Shore
+    //Setup
+    if (newLevelSetup) {
+      LevelFinaleSetup();
+      newLevelSetup = false;
+    }
+
+    //Draw
+    LevelFinaleDraw();
     break;
   }
 
@@ -144,8 +179,8 @@ boolean btnCtrlTop = false;
 boolean btnCtrlBottom = false;
 boolean btnCtrlLeft = false;
 boolean btnCtrlRight = false;
-boolean canDash = true;
 boolean btnDash = false;
+boolean btnSwing = false;
 
 void keyPressed() {
   if (key == CODED) {
@@ -218,6 +253,10 @@ void drawGrid() {
   for (int j = -TILE_SIZE; j < height+TILE_SIZE; j += TILE_SIZE) {
     line(0, j-1, width, j-1);
   }
+}
+
+boolean random() {
+  return random(1)>=0.5f;
 }
 
 boolean aabb(Entity e1, Entity e2) {

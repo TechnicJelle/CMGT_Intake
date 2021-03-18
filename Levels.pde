@@ -8,10 +8,37 @@ void resetPlayer(float x, float y) {
   //btnCtrlRight = false;
 }
 
+void tutorialText(String t) {
+  textAlign(LEFT, TOP);
+  textSize(32);
+  fill(255);
+  text(t, 10, 10);
+}
+
+void dialog(PImage chara, String text) {
+  float padding = 8;
+  stroke(0);
+  strokeWeight(padding/3);
+  textSize(31);
+  pushMatrix();
+  translate(0, height - chara.height);
+  fill(106, 101, 82, 200);
+  rect(padding, -padding *3, width - chara.width - padding *5, chara.height + padding *2, padding*4); //textbox
+  fill(186, 179, 154, 200);
+  rect(width - chara.width - padding *3, -padding *3, chara.width + padding *2, chara.height + padding *2, padding*4); //charabox
+  image(chara, width - chara.width - padding *2, -padding *2);
+  noStroke();
+  fill(255, 10);
+  rect(padding *5, padding, width - chara.width - padding *13, chara.height - padding *6, padding);
+  fill(255);
+  text(text, padding *5, padding, width - chara.width - padding *13, chara.height - padding *6);
+  popMatrix();
+}
+
 
 //Cabin
 void LevelCabinSetup() {
-  player.changeSize(200);
+  //player.changeSize(200);
   resetPlayer(124, 100);
 
   player.speed = 1;
@@ -35,6 +62,15 @@ void LevelCabinDraw() {
 
   player.update();
   player.render();
+  if (millis() - levelMillis < 10000)
+    dialog(captain, "'Ello there, sport!\nWake up! We've arrived!\n\nYou've still gotta explain to me why you wanted to go here when you get back, al'ight?");
+  else if (millis() - levelMillis < 20000)
+    dialog(main, "I should go over my notes just once more before I go.");
+  else if (dist(133, 794, player.pos.x, player.pos.y) < 300 /* && aabb(mouseX, mouseY, 1, 1, 133, 794, 248, 213)*/) {
+    image(notesL, width/2 - notesL.width, 0);
+    image(notesR, width/2, 0);
+  }
+  tutorialText("WASD to move");
 }
 
 
@@ -54,8 +90,8 @@ void LevelShoreSetup() {
   obstacles.add(new Entity(0, 0, 1, 1079, ENTITY_TYPE.WALL));
   obstacles.add(new Entity(1919, 0, 1, 1079, ENTITY_TYPE.WALL));
 
-  obstacles.add(new EntitySprite(100, 800, 200, 200, "Crate.png", ENTITY_TYPE.OBSTACLE));
-  obstacles.add(new EntitySprite(1400, 700, 250, 250, "Crate.png", ENTITY_TYPE.OBSTACLE));
+  obstacles.add(new EntitySprite(100, 800, "Crate.png", ENTITY_TYPE.OBSTACLE));
+  obstacles.add(new EntitySprite(1400, 700, "Crate.png", 300, ENTITY_TYPE.OBSTACLE));
 }
 
 void LevelShoreDraw() {
@@ -69,10 +105,7 @@ void LevelShoreDraw() {
   player.update();
   player.render();
 
-  textSize(32);
-  fill(255);
-  textAlign(LEFT, TOP);
-  text("Press SPACE to dash!", 10, 10);
+  tutorialText("Press SPACE to dash!");
 }
 
 
@@ -87,20 +120,30 @@ void LevelJungle1Setup() {
   obstacles.add(new Entity(0, -player.size.y-5, 1919, 1, ENTITY_TYPE.WALL));
   obstacles.add(new Entity(0, 0, 1, 1079, ENTITY_TYPE.WALL));
   obstacles.add(new Entity(0, 1079, 1919, 1, ENTITY_TYPE.WALL));
+  obstacles.add(new Entity(1919, 0, 1, 1079, ENTITY_TYPE.TEMPWALL));
 
-  obstacles.add(new EntitySprite(1400, 700, 250, 250, "Barrel.png", ENTITY_TYPE.OBSTACLE));
+  obstacles.add(new EntitySprite(0, 581, "Barrel.png", 250, ENTITY_TYPE.OBSTACLE));
+  obstacles.add(new EntitySprite(0, 831, "Barrel.png", 250, ENTITY_TYPE.OBSTACLE));
+  obstacles.add(new EntitySprite(250, 831, "Barrel.png", 250, ENTITY_TYPE.OBSTACLE));
+  obstacles.add(new EntitySprite(1200, 450, "SwordFull.png", ENTITY_TYPE.SWORD));
 }
 
 void LevelJungle1Draw() {
   background(bkgr);
 
-  for (Entity o : obstacles) {
-    if (o.TYPE != ENTITY_TYPE.WALL)
+  for (int i = obstacles.size() - 1; i >= 0; i--) {
+    Entity o = obstacles.get(i);
+    if (o.TYPE != ENTITY_TYPE.WALL && o.TYPE != ENTITY_TYPE.TEMPWALL)
       o.render();
+    if (player.hasSword && o.TYPE == ENTITY_TYPE.TEMPWALL)
+      obstacles.remove(i);
   }
 
   player.update();
   player.render();
+  if (!player.hasSword) {
+    tutorialText("Pick up the sword");
+  }
 }
 
 //Jungle2
@@ -126,4 +169,26 @@ void LevelJungle2Draw() {
 
   player.update();
   player.render();
+  tutorialText("Left Click to swing your sword");
+}
+
+void LevelFinaleSetup() {
+  player.changeSize(200);
+  resetPlayer(width/2, height/2);
+  player.vel = new PVector(0, 0);
+}
+
+void LevelFinaleDraw() {
+  background(100);
+  player.update();
+  player.render();
+
+  textAlign(CENTER, CENTER);
+  textSize(64);
+  fill(255);
+  text("End of the demo!\nESC to close\nPress C to see the concept art", width/2, height/2);
+  if (keyCode == 'c') {
+    link("https://github.com/TechnicJelle/CMGT_Intake/tree/combat/ConceptArt");
+    exit();
+  }
 }
