@@ -10,3 +10,5 @@ The game I have made for the intake for the study [Creative Media and Game Techn
 
 All assets have been made by me.\
 Every line of code was written by me.
+
+Special thanks to OneLoneCoder for his Rectangle Collisions video, which I adapted to Processing (https://github.com/TechnicJelle/Processing_OLC_Rectangles) and used for the collisions in this game.
