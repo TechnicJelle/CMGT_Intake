@@ -26,9 +26,13 @@ interface ENTITY_TYPE {
 }
 
 PImage bkgr;
+PImage notesL, notesR;
+PImage captain, main;
 PImage PIMGshore;
 PImage PIMGjungle1;
 PImage PIMGjungle2;
+
+int levelMillis = -1;
 
 ArrayList<Entity> obstacles = new ArrayList<Entity>();
 
@@ -37,7 +41,9 @@ void settings() {
 }
 
 PVector aim;
+//PVector down;
 void mousePressed() {
+  //down = new PVector(mouseX, mouseY);
   if (!player.swinging)
     setAim();
   btnSwing = true;
@@ -58,29 +64,32 @@ void setup() {
   surface.setIcon(loadImage("Icon.png"));
   player = new Player(width/2, height/2);
 
-  LEVEL = LEVELS.CABIN;
+  setLevel(LEVELS.CABIN);
 
   if (LEVEL == LEVELS.CABIN)
-    thread("loadBackgrounds");
+    thread("loadData");
   else
-    loadBackgrounds();
+    loadData();
 }
 
-void loadBackgrounds() {
+void loadData() {
+  captain = loadImage("Captain.png");
+  main = loadImage("Main.png");
+  notesL = loadImage("NotesL.png");
+  notesR = loadImage("NotesR.png");
   PIMGshore = loadImage("Shore2.png");
   PIMGjungle1 = loadImage("Jungle1.png");
   PIMGjungle2 = loadImage("Jungle2.png");
 }
 
 void nextLevel() {
-  LEVEL++;
-  newLevelSetup = true;
-  obstacles.clear();
+  setLevel(++LEVEL);
 }
 
 void setLevel(int nl) {
   LEVEL = nl;
   newLevelSetup = true;
+  levelMillis = millis();
   obstacles.clear();
 }
 
@@ -194,9 +203,6 @@ void keyPressed() {
     case ' ':
       btnDash = true;
       break;
-    case 'l':
-      btnSwing = true;
-      break;
     }
   }
 }
@@ -221,9 +227,6 @@ void keyReleased() {
       break;
     case ' ':
       btnDash = false;
-      break;
-    case 'l':
-      btnSwing = false;
       break;
     }
   }
@@ -250,6 +253,10 @@ void drawGrid() {
   for (int j = -TILE_SIZE; j < height+TILE_SIZE; j += TILE_SIZE) {
     line(0, j-1, width, j-1);
   }
+}
+
+boolean random() {
+  return random(1)>=0.5f;
 }
 
 boolean aabb(Entity e1, Entity e2) {

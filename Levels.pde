@@ -15,6 +15,26 @@ void tutorialText(String t) {
   text(t, 10, 10);
 }
 
+void dialog(PImage chara, String text) {
+  float padding = 8;
+  stroke(0);
+  strokeWeight(padding/3);
+  textSize(31);
+  pushMatrix();
+  translate(0, height - chara.height);
+  fill(106, 101, 82, 200);
+  rect(padding, -padding *3, width - chara.width - padding *5, chara.height + padding *2, padding*4); //textbox
+  fill(186, 179, 154, 200);
+  rect(width - chara.width - padding *3, -padding *3, chara.width + padding *2, chara.height + padding *2, padding*4); //charabox
+  image(chara, width - chara.width - padding *2, -padding *2);
+  noStroke();
+  fill(255, 10);
+  rect(padding *5, padding, width - chara.width - padding *13, chara.height - padding *6, padding);
+  fill(255);
+  text(text, padding *5, padding, width - chara.width - padding *13, chara.height - padding *6);
+  popMatrix();
+}
+
 
 //Cabin
 void LevelCabinSetup() {
@@ -42,6 +62,14 @@ void LevelCabinDraw() {
 
   player.update();
   player.render();
+  if (millis() - levelMillis < 10000)
+    dialog(captain, "'Ello there, sport!\nWake up! We've arrived!\n\nYou've still gotta explain to me why you wanted to go here when you get back, al'ight?");
+  else if (millis() - levelMillis < 20000)
+    dialog(main, "I should go over my notes just once more before I go.");
+  else if (dist(133, 794, player.pos.x, player.pos.y) < 300 /* && aabb(mouseX, mouseY, 1, 1, 133, 794, 248, 213)*/) {
+    image(notesL, width/2 - notesL.width, 0);
+    image(notesR, width/2, 0);
+  }
   tutorialText("WASD to move");
 }
 
@@ -97,7 +125,7 @@ void LevelJungle1Setup() {
   obstacles.add(new EntitySprite(0, 581, "Barrel.png", 250, ENTITY_TYPE.OBSTACLE));
   obstacles.add(new EntitySprite(0, 831, "Barrel.png", 250, ENTITY_TYPE.OBSTACLE));
   obstacles.add(new EntitySprite(250, 831, "Barrel.png", 250, ENTITY_TYPE.OBSTACLE));
-  obstacles.add(new EntitySprite(912, 318, "SwordFull.png", ENTITY_TYPE.SWORD));
+  obstacles.add(new EntitySprite(1200, 450, "SwordFull.png", ENTITY_TYPE.SWORD));
 }
 
 void LevelJungle1Draw() {
@@ -158,5 +186,9 @@ void LevelFinaleDraw() {
   textAlign(CENTER, CENTER);
   textSize(64);
   fill(255);
-  text("End of the demo!", width/2, height/2);
+  text("End of the demo!\nESC to close\nPress C to see the concept art", width/2, height/2);
+  if (keyCode == 'c') {
+    link("https://github.com/TechnicJelle/CMGT_Intake/tree/combat/ConceptArt");
+    exit();
+  }
 }

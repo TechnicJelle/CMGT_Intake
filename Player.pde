@@ -11,6 +11,7 @@ class Player extends EntitySprite {
 
   PImage sword = loadImage("SwordWeapon.png");
   boolean swinging = false;
+  boolean swingDir = true;
   float swingProgress = -1;
   int millisAtSwing = -1;
 
@@ -24,6 +25,7 @@ class Player extends EntitySprite {
 
     if (keyPressed) {
       ctrlInput = new PVector((btnCtrlLeft ? -1 : (btnCtrlRight ? 1 : 0)), (btnCtrlTop ? -1 : (btnCtrlBottom ? 1 : 0))).limit(1);
+      //drawInput(ctrlInput);
       applyForce(ctrlInput.mult(speed));
       if (LEVEL != LEVELS.CABIN && mayDash) {
         if (btnDash && vel.magSq() > 1) {
@@ -38,7 +40,9 @@ class Player extends EntitySprite {
     if (!swinging && btnSwing && hasSword) {
       millisAtSwing = millis();
       swinging = true;
-      //btnSwing = false;
+      //btnSwing = false; //One click per swing. Comment out to keep swinging
+      //swingDir = random(); //Swing in random direction
+      swingDir = !swingDir; //Swing in alternating direction
       setAim();
     }
 
@@ -49,9 +53,6 @@ class Player extends EntitySprite {
 
     if (swinging) 
       swingProgress = map(millis() - millisAtSwing, 0, SWING_SPEED, 0, 1);
-
-
-    //drawInput(ctrlInput);
 
     vel.add(acc);
 
@@ -81,7 +82,10 @@ class Player extends EntitySprite {
     if (swinging) {
       pushMatrix();
       translate(pos.x + size.x/2, pos.y + size.y/2);
-      rotate(swingProgress * HALF_PI - HALF_PI + aim.heading());
+      if (swingDir)
+        rotate(swingProgress * HALF_PI - HALF_PI + aim.heading());
+      else
+        rotate((1.0-swingProgress) * HALF_PI - HALF_PI + aim.heading());
       image(sword, 0, 0);
       popMatrix();
     }
@@ -89,7 +93,7 @@ class Player extends EntitySprite {
     if (!mayDash) {
       noStroke();
       fill(255, map(millis() - millisAtDash, 0, 1000, 0, 255));
-      ellipse(0, 0, size.x, size.x);
+      circle(0, 0, 150);
     }
   }
 
