@@ -50,7 +50,6 @@ void mouseReleased() {
 
 void setAim() {
   aim = new PVector(mouseX, mouseY).sub(PVector.add(player.pos, PVector.div(player.size, 2)));
-  println(aim);
 }
 
 
