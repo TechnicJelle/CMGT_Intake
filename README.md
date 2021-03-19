@@ -8,6 +8,10 @@
 
 The game I have made for the intake for the study [Creative Media and Game Technologies](https://www.saxion.edu/programmes/bachelor/creative-media-and-game-technologies) at [Saxion University of Applied Sciences](https://www.saxion.edu/)
 
+### Warning!
+I cannot guarantee this game will work on anything other than exactly a FullHD (1920x1080) screen.
+
+\
 All assets have been made by me.\
 Every line of code was written by me.
 
