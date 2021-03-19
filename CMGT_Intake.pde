@@ -203,6 +203,9 @@ void keyPressed() {
     case ' ':
       btnDash = true;
       break;
+    case 'c':
+      link("https://github.com/TechnicJelle/CMGT_Intake/tree/main/ConceptArt");
+      break;
     }
   }
 }

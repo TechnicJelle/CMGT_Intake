@@ -187,8 +187,4 @@ void LevelFinaleDraw() {
   textSize(64);
   fill(255);
   text("End of the demo!\nESC to close\nPress C to see the concept art", width/2, height/2);
-  if (keyCode == 'c') {
-    link("https://github.com/TechnicJelle/CMGT_Intake/tree/combat/ConceptArt");
-    exit();
-  }
 }
