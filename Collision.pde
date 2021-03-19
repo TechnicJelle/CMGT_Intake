@@ -40,7 +40,7 @@ Collision RayVsEntity(PVector ray_origin, PVector ray_dir, Entity target) {
     float temp = t_near.y;
     t_near.y = t_far.y;
     t_far.y = temp;
-  } //maybe swap the whole vector and not only one coord? test that if this doesn't work!!
+  }
 
   if (t_near.x > t_far.y || t_near.y > t_far.x) return new Collision(false);
 
@@ -84,4 +84,14 @@ Collision DynamicEntityVsEntity(Entity in, Entity target) { //returns PVector co
 
 PVector elemmult(PVector a, PVector b) {
   return new PVector(a.x * b.x, a.y * b.y);
+}
+
+PVector elemdiv(PVector a, PVector b) {
+  float x = 0;
+  float y = 0;
+  if (a.x != 0.0f && b.x != 0.0f)
+    x = a.x / b.x;
+  if (a.y != 0.0f && b.y != 0.0f)
+    y = a.y / b.y;
+  return new PVector(x, y);
 }

@@ -37,7 +37,8 @@ int levelMillis = -1;
 ArrayList<Entity> obstacles = new ArrayList<Entity>();
 
 void settings() {
-  fullScreen();
+  //fullScreen();
+  size(1280, 720);
 }
 
 PVector aim;
@@ -76,10 +77,15 @@ void loadData() {
   captain = loadImage("Captain.png");
   main = loadImage("Main.png");
   notesL = loadImage("NotesL.png");
+  notesL.resize(0, height);
   notesR = loadImage("NotesR.png");
+  notesR.resize(0, height);
   PIMGshore = loadImage("Shore2.png");
+  PIMGshore.resize(width, height);  
   PIMGjungle1 = loadImage("Jungle1.png");
+  PIMGjungle1.resize(width, height);  
   PIMGjungle2 = loadImage("Jungle2.png");
+  PIMGjungle2.resize(width, height);
 }
 
 void nextLevel() {
@@ -271,4 +277,10 @@ boolean aabb(float x1, float y1, float w1, float h1, float x2, float y2, float w
   //adapted from: https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
   return x1 < x2 + w2  &&  x1 + w1 > x2 
     &&   y1 < y2 + h2  &&  y1 + h1 > y2;
+}
+
+PVector screenScale(PVector p) {
+  p = elemdiv(p, new PVector(1920, 1080));
+  p = elemmult(p, new PVector(width, height));
+  return p;
 }

@@ -20,6 +20,7 @@ class EntitySprite extends Entity {
   }
 
   void render() {
+    super.render();
     pushMatrix();
     translate(pos.x + size.x/2, pos.y + size.y/2);
     rotate(vel.heading());
@@ -27,12 +28,14 @@ class EntitySprite extends Entity {
     popMatrix();
   }
 
-  void changeSize(int newSizeX, int newSizeY) {
-    sprite.resize(newSizeX, newSizeY);
+  void changeSize(float newSizeX, float newSizeY) {
+    PVector s = new PVector(newSizeX, newSizeY);
+    s = screenScale(s);
+    sprite.resize(int(s.x), int(s.y));
     size = new PVector(sprite.width, sprite.height);
   }
 
-  void changeSize(int newSize) {
-    changeSize(newSize, int(size.y/size.x*newSize));
+  void changeSize(float newSize) {
+    changeSize(newSize, size.y/size.x*newSize);
   }
 }

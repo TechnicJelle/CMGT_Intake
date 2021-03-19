@@ -97,7 +97,7 @@ class Player extends EntitySprite {
     }
   }
 
-  void changeSize(int newSize) {
+  void changeSize(float newSize) {
     super.changeSize(newSize);
     sword.resize(int(size.x), int(size.y));
   }

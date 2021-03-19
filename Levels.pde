@@ -1,5 +1,5 @@
 void resetPlayer(float x, float y) {
-  player.pos = new PVector(x, y);
+  player.pos = screenScale(new PVector(x, y));
   player.vel = new PVector(0, 0);
   player.acc = new PVector(0, 0);
   //btnCtrlTop = false;
@@ -44,6 +44,7 @@ void LevelCabinSetup() {
   player.speed = 1;
 
   bkgr = loadImage("Cabin2.png");
+  bkgr.resize(width, height);
 
   obstacles.add(new Entity(0, 0, 1919, 50, ENTITY_TYPE.WALL));
   obstacles.add(new Entity(607, 20, 705, 282, ENTITY_TYPE.WALL));
@@ -60,6 +61,10 @@ void LevelCabinSetup() {
 void LevelCabinDraw() {
   background(bkgr);
 
+  for (Entity o : obstacles) {
+    //if (o.TYPE != ENTITY_TYPE.WALL)
+    o.render();
+  }
   player.update();
   player.render();
   if (millis() - levelMillis < 10000)
@@ -98,8 +103,8 @@ void LevelShoreDraw() {
   background(bkgr);
 
   for (Entity o : obstacles) {
-    if (o.TYPE != ENTITY_TYPE.WALL)
-      o.render();
+    //if (o.TYPE != ENTITY_TYPE.WALL)
+    o.render();
   }
 
   player.update();

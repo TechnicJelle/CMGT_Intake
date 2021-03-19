@@ -17,11 +17,11 @@ class Entity {
   }
 
   void constructor(PVector p, PVector s, int t) {
-    pos = p.copy();
+    pos = screenScale(p.copy());
     vel = new PVector(0, 0);
     acc = new PVector(0, 0);
     //mass = 1;
-    size = s.copy();
+    size = screenScale(s.copy());
     debugCol = color(random(100, 255), random(100, 255), random(100, 255));
     TYPE = t;
   }
