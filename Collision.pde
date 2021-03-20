@@ -85,3 +85,13 @@ Collision DynamicEntityVsEntity(Entity in, Entity target) { //returns PVector co
 PVector elemmult(PVector a, PVector b) {
   return new PVector(a.x * b.x, a.y * b.y);
 }
+
+PVector elemdiv(PVector a, PVector b) {
+  float x = 0;
+  float y = 0;
+  if (a.x != 0.0f && b.x != 0.0f)
+    x = a.x / b.x;
+  if (a.y != 0.0f && b.y != 0.0f)
+    y = a.y / b.y;
+  return new PVector(x, y);
+}

@@ -20,11 +20,11 @@ class EntitySprite extends Entity {
   }
 
   void render() {
-    pushMatrix();
-    translate(pos.x + size.x/2, pos.y + size.y/2);
-    rotate(vel.heading());
-    image(sprite, -size.x/2, -size.y/2);
-    popMatrix();
+    canvas.pushMatrix();
+    canvas.translate(pos.x + size.x/2, pos.y + size.y/2);
+    canvas.rotate(vel.heading());
+    canvas.image(sprite, -size.x/2, -size.y/2);
+    canvas.popMatrix();
   }
 
   void changeSize(int newSizeX, int newSizeY) {

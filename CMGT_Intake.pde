@@ -1,3 +1,6 @@
+PGraphics canvas;
+boolean fullHD;
+
 Player player;
 PVector ctrlInput;
 
@@ -38,6 +41,7 @@ ArrayList<Entity> obstacles = new ArrayList<Entity>();
 
 void settings() {
   fullScreen();
+  //size(1280, 720);
 }
 
 PVector aim;
@@ -56,13 +60,15 @@ void mouseReleased() {
 }
 
 void setAim() {
-  aim = new PVector(mouseX, mouseY).sub(PVector.add(player.pos, PVector.div(player.size, 2)));
+  aim = screenScale(new PVector(mouseX, mouseY)).sub(PVector.add(player.pos, PVector.div(player.size, 2)));
 }
 
 
 void setup() {
   surface.setIcon(loadImage("Icon.png"));
-  player = new Player(width/2, height/2);
+  canvas = createGraphics(1920, 1080);
+  fullHD = width == 1920 && height == 1080;
+  player = new Player(canvas.width/2, canvas.height/2);
 
   setLevel(LEVELS.CABIN);
 
@@ -96,6 +102,7 @@ void setLevel(int nl) {
 boolean newLevelSetup = true;
 
 void draw() {
+  canvas.beginDraw();
   switch(LEVEL) {
   case LEVELS.CABIN: //Cabin
     //Setup
@@ -173,6 +180,14 @@ void draw() {
 
   // Gizmos
   //drawGrid();
+  canvas.endDraw();
+  if (fullHD) {
+    image(canvas, 0, 0);
+  } else {
+    PImage finalFrame = canvas.get();
+    finalFrame.resize(width, height);
+    image(finalFrame, 0, 0);
+  }
 }
 
 boolean btnCtrlTop = false;
@@ -236,25 +251,25 @@ void keyReleased() {
 }
 
 void drawInput(PVector i) {
-  float x = width/2;
-  float y = height/2;
-  noFill();
-  stroke(255);
-  strokeWeight(2);
-  ellipseMode(RADIUS);
-  circle(x, y, 64);
-  line(x, y, x + i.x*64, y + i.y*64);
+  float x = canvas.width/2;
+  float y = canvas.height/2;
+  canvas.noFill();
+  canvas.stroke(255);
+  canvas.strokeWeight(2);
+  canvas.ellipseMode(RADIUS);
+  canvas.circle(x, y, 64);
+  canvas.line(x, y, x + i.x*64, y + i.y*64);
 }
 
 void drawGrid() {
   final int TILE_SIZE = 64;
-  stroke(255, 100);
-  strokeWeight(1);
-  for (int i = -TILE_SIZE; i < width+TILE_SIZE; i += TILE_SIZE) {
-    line(i-1, 0, i-1, height);
+  canvas.stroke(255, 100);
+  canvas.strokeWeight(1);
+  for (int i = -TILE_SIZE; i < canvas.width+TILE_SIZE; i += TILE_SIZE) {
+    canvas.line(i-1, 0, i-1, canvas.height);
   }
-  for (int j = -TILE_SIZE; j < height+TILE_SIZE; j += TILE_SIZE) {
-    line(0, j-1, width, j-1);
+  for (int j = -TILE_SIZE; j < canvas.height+TILE_SIZE; j += TILE_SIZE) {
+    canvas.line(0, j-1, canvas.width, j-1);
   }
 }
 
@@ -271,4 +286,12 @@ boolean aabb(float x1, float y1, float w1, float h1, float x2, float y2, float w
   //adapted from: https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
   return x1 < x2 + w2  &&  x1 + w1 > x2 
     &&   y1 < y2 + h2  &&  y1 + h1 > y2;
+}
+
+PVector screenScale(PVector p) {
+  if (fullHD)
+    return p;
+  p = elemmult(p, new PVector(1920, 1080));
+  p = elemdiv(p, new PVector(width, height));
+  return p;
 }
