@@ -15,6 +15,6 @@ I cannot guarantee this game will work on anything other than exactly a FullHD (
 All assets have been made by me.\
 Every line of code was written by me.
 
-[![Saxion CMGT Intake Assignment](/.github/cmgt-intake_assignment.svg)](https://www.saxion.nl/binaries/content/assets/edu/programmes/bachelors/creative-business-and-game-technologies/cmgt-intake.pdf)
+[![Saxion CMGT Intake Assignment](/.github/images/cmgt-intake_assignment.svg)](https://www.saxion.nl/binaries/content/assets/edu/programmes/bachelors/creative-business-and-game-technologies/cmgt-intake.pdf)
 
 Special thanks to OneLoneCoder for his Rectangle Collisions video, which I adapted to Processing (https://github.com/TechnicJelle/Processing_OLC_Rectangles) and used for the collisions in this game.
