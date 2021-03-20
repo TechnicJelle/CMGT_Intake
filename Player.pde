@@ -21,7 +21,7 @@ class Player extends EntitySprite {
 
   void update() {
     vel.mult(dampeningFac);
-    onScreen = pos.x > -size.x*1.5 && pos.x < width+size.x*1.5 && pos.y > -size.y*1.5 && pos.y < height+size.y*1.5;
+    onScreen = pos.x > -size.x*1.5 && pos.x < canvas.width+size.x*1.5 && pos.y > -size.y*1.5 && pos.y < canvas.height+size.y*1.5;
 
     if (keyPressed) {
       ctrlInput = new PVector((btnCtrlLeft ? -1 : (btnCtrlRight ? 1 : 0)), (btnCtrlTop ? -1 : (btnCtrlBottom ? 1 : 0))).limit(1);
@@ -80,20 +80,20 @@ class Player extends EntitySprite {
 
   void render() {
     if (swinging) {
-      pushMatrix();
-      translate(pos.x + size.x/2, pos.y + size.y/2);
+      canvas.pushMatrix();
+      canvas.translate(pos.x + size.x/2, pos.y + size.y/2);
       if (swingDir)
-        rotate(swingProgress * HALF_PI - HALF_PI + aim.heading());
+        canvas.rotate(swingProgress * HALF_PI - HALF_PI + aim.heading());
       else
-        rotate((1.0-swingProgress) * HALF_PI - HALF_PI + aim.heading());
-      image(sword, 0, 0);
-      popMatrix();
+        canvas.rotate((1.0-swingProgress) * HALF_PI - HALF_PI + aim.heading());
+      canvas.image(sword, 0, 0);
+      canvas.popMatrix();
     }
     super.render();
     if (!mayDash) {
-      noStroke();
-      fill(255, map(millis() - millisAtDash, 0, 1000, 0, 255));
-      circle(0, 0, 150);
+      canvas.noStroke();
+      canvas.fill(255, map(millis() - millisAtDash, 0, 1000, 0, 255));
+      canvas.circle(0, 0, 150);
     }
   }
 

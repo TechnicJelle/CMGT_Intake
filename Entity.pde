@@ -39,10 +39,10 @@ class Entity {
   }
 
   void render() {
-    noFill();
-    stroke(debugCol);
-    strokeWeight(1);
-    rectMode(CORNER);
-    rect(pos.x, pos.y, size.x, size.y);
+    canvas.noFill();
+    canvas.stroke(debugCol);
+    canvas.strokeWeight(1);
+    canvas.rectMode(CORNER);
+    canvas.rect(pos.x, pos.y, size.x, size.y);
   }
 }
