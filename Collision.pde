@@ -66,7 +66,10 @@ Collision RayVsEntity(PVector ray_origin, PVector ray_dir, Entity target) {
   return new Collision(true, contact_point, contact_normal, t_hit_near);
 }
 
-Collision DynamicEntityVsEntity(Entity in, Entity target) { //returns PVector contact_point, PVector contact_normal, float fTime
+Collision DynamicEntityVsEntity(Entity in, Entity t) { //returns PVector contact_point, PVector contact_normal, float fTime
+  Entity target = new Entity(t);
+  target.pos.mult(2.2);
+  target.size.mult(2.2);
   boolean ret = false;
   if (in.vel.x == 0 && in.vel.y == 0)
     return new Collision(false);

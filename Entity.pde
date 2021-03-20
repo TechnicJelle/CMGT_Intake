@@ -15,6 +15,10 @@ class Entity {
   Entity(float x, float y, float sx, float sy, int t) {
     constructor(new PVector(x, y), new PVector(sx, sy), t);
   }
+  
+  Entity(Entity e) {
+    constructor(e.pos, e.size, e.TYPE);
+  }
 
   void constructor(PVector p, PVector s, int t) {
     pos = screenScale(p.copy());
