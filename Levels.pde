@@ -41,7 +41,7 @@ void LevelCabinSetup() {
   //player.changeSize(200);
   resetPlayer(124, 100);
 
-  player.speed = 1;
+  player.speed = 2;
 
   bkgr = loadImage("Cabin2.png");
 
